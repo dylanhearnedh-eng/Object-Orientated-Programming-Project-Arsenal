@@ -39,10 +39,14 @@ class Manager(Person): #inheritance can be linked down the generations, here it 
 
 class Player(Person): #child class
 
+    squad_size = 0
+
     def __init__(self,first_name,surname,age,position,squad_number):
         super().__init__(first_name,surname,age) #this is how you link the parent to the child class
         self.position = position
         self.squad_number = squad_number
+        #class method
+        Player.squad_size += 1
 
     def display_player(self):
         return (f'PLAYER \nNAME: {self.first_name} {self.surname} \nAGE: {self.age} \nTEAM: {self.team} \nPOSITION: {self.position} \nSQUAD NUMBER: {self.squad_number}')
@@ -59,6 +63,11 @@ class Player(Person): #child class
     def save(self):
         return (f'{self.surname} Makes an important save')
 
+
+    @classmethod
+    def get_count(cls):
+        return f'Total # of players in the squad: {cls.squad_size}'
+    
 #teams
 team = Team()
 
@@ -88,57 +97,47 @@ eze = Player('Eberechi','Eze',27,'LW',10)
 trossard = Player('Leandro','Trossard',30,'FW',19)
 
 
-squad = [1,33,2,6,12,41,36,8,10,14,7]
+match_squad = [1,33,2,6,12,41,36,8,10,14,7]
 bench = [11,3,5,4,16,23,20,29,19]
 
+squad = [
+    raya, calafiori, saliba, gabriel, timber, rice, zubimendi, odegaard,
+    eze, gyokeres, saka, martinelli, mosquera, hincapie, white,
+    norgaard, merino, madueke, havertz, trossard]
 
-team.add_player(raya)
-team.add_player(calafiori)
-team.add_player(saliba)
-team.add_player(gabriel)
-team.add_player(timber)
-team.add_player(rice)
-team.add_player(zubimendi)
-team.add_player(odegaard)
-team.add_player(eze)
-team.add_player(gyokeres)
-team.add_player(saka)
-team.add_player(martinelli)
-team.add_player(mosquera)
-team.add_player(hincapie)
-team.add_player(white)
-team.add_player(norgaard)
-team.add_player(merino)
-team.add_player(madueke)
-team.add_player(havertz)
-team.add_player(trossard)
-
+for p in squad:
+    team.add_player(p)
 
 print(saka.shoot())
 print(raya.save())
 print(saka.display_player())
 
 
-
 print ('\n')
 print (team.print_all())
 print (manager.display_manager_prematch())
 
+print ('\n')
+print (f'    GK    \n' \
+'LB CB CB RB\n' \
+' CM CM CM \n' \
+' LW ST RW \n')
+
 #subsitution
 #here we can sub players off and on
 
-squad.remove(14)
-squad.append(29)
+match_squad.remove(14)
+match_squad.append(29)
 bench.remove(29)
 bench.append(14)
 
 #ensures that only 11 players are on the pitch at the same time
-if len(squad) != 11:
+if len(match_squad) != 11:
     raise ValueError('THE TEAM MUST HAVE 11 PLAYERS TO START THE MATCH')
 
 print ('\nStarting 11')
 for starter in team.starting_11: #look iterated through the list of players and adds them
-    if starter.squad_number in squad: #adds them to the squad list if their number is on the list
+    if starter.squad_number in match_squad: #adds them to the squad list if their number is on the list
         print (f'{starter.squad_number}: {starter.first_name} {starter.surname}: {starter.position}')
     else:
         pass #skips them if not
@@ -150,11 +149,8 @@ for starter in team.starting_11: #look iterated through the list of players and 
         print(f'{starter.squad_number}: {starter.first_name} {starter.surname}: {starter.position}')
     else:
         pass
-#update for/if loop to add starters to 1 list and bench players to another
-#need to update attributes to state that some are starters and other are bench
-print('\n')
-print (f'    GK    \n' \
-'LB CB CB RB\n' \
-' CM CM CM \n' \
-' LW ST RW \n')
 
+print('\n')
+
+#class method
+print(Player.get_count())
