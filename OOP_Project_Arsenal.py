@@ -1,5 +1,5 @@
 #OOP practice with Arsenal 25/26 squad
-
+#Champions Ole Ole
 class Team():
 
     team = 'Arsenal' #not def so can be used accross all classes
